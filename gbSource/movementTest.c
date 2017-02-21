@@ -128,10 +128,8 @@ void main(void) {
     set_bkg_tiles(0, 0, 0, 0, floor);
 
     // set up score window
-    SPRITES_8x8;
     set_win_tiles(0, 0, 0, 0, heart);
     move_win(0, 128);
-
 
     SHOW_WIN;
     SHOW_BKG;
