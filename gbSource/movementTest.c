@@ -122,19 +122,15 @@ void main(void) {
     //spriteDouble *player = malloc(sizeof(spriteDouble));
 
     // set up background
-    SPRITES_8x8;
+    DISPLAY_OFF;
+    wait_vbl_done();
     set_bkg_data(0, 1, floor);
-    set_bkg_data(1, 2, heart);
     set_bkg_tiles(0, 0, 0, 0, floor);
-
-    // set up score window
-    set_win_tiles(0, 0, 0, 0, heart);
-    move_win(0, 128);
-
-    SHOW_WIN;
     SHOW_BKG;
 
 	loadSprites();
+
+    DISPLAY_ON;
 
     while (1) {
         getInput();
