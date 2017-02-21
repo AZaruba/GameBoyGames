@@ -1,7 +1,21 @@
 #include <gb/gb.h>
-#include "C:\Users\abzar\Documents\GBDTools\GameBoyGames\gbSource\Sprites\knight.c"
-#include "C:\Users\abzar\Documents\GBDTools\GameBoyGames\gbSource\Sprites\ogre.c"
-typedef enum { false, true } bool;
+#include "malloc.c"
+#include "Sprites\knight.c"
+#include "Sprites\ogre.c"
+#include "Sprites\heart.c"
+#include "Sprites\floor.c"
+
+#define WINSIZEX 0x90
+#define WINSIZEY 0x0F
+
+typedef struct {
+    int leftX;
+    int leftY;
+    int rightX;
+    int rightY;
+    int leftSprite;
+    int rightSprite;
+} spriteDouble;
 
     int pcLeftX = 75;  //beginning coords
     int leftY = 75;
@@ -12,7 +26,7 @@ typedef enum { false, true } bool;
     int march = 0; 
     int currentL = 0;
     int currentR = 2;
-    bool spriteHasChanged = false;
+    int spriteHasChanged = 0;
 
 void loadSprites(void) {
     SPRITES_8x16;
@@ -35,8 +49,8 @@ void spriteChange(int spriteL, int frameL, int spriteR, int frameR) {
 	set_sprite_tile(spriteR, frameR);
 }
 
-bool collisionDetection() {
-   return false;
+int collisionDetection() {
+   return 0;
 }
 
 void getInput(void) {
@@ -51,7 +65,7 @@ void getInput(void) {
     		if (currentL != 16) {
     		    currentL = 16;
                 currentR = 18;
-                spriteHasChanged = true;
+                spriteHasChanged = 1;
             }
             pcLeftX++;
             pcRightX++;
@@ -63,7 +77,7 @@ void getInput(void) {
     		if (currentL != 24) {
     		    currentL = 24;
                 currentR = 26;
-                spriteHasChanged = true;
+                spriteHasChanged = 1;
             }
             pcLeftX--;
             pcRightX--;
@@ -75,7 +89,7 @@ void getInput(void) {
     		if (currentL != 8) {
     		    currentL = 8;
                 currentR = 10;
-                spriteHasChanged = true;
+                spriteHasChanged = 1;
             }
     		leftY--;
     		rightY--;
@@ -87,23 +101,40 @@ void getInput(void) {
     		if (currentL != 0) {
     		    currentL = 0;
                 currentR = 2;
-                spriteHasChanged = true;
+                spriteHasChanged = 1;
             }
     		leftY++;
     		rightY++;
     		move_sprite(0,pcLeftX,leftY);
             move_sprite(1,pcRightX,rightY);
     	}
-    	if (march < 30 && !spriteHasChanged)
+    	if (march < 30 && spriteHasChanged == 0)
     		march++;
         else {
         	march = 0;
-        	spriteHasChanged = false;
+        	spriteHasChanged = 0;
         }
         delay(16);
 }
 
 void main(void) {
+    // allocate memory (do this in one chunk eventually)
+    //spriteDouble *player = malloc(sizeof(spriteDouble));
+
+    // set up background
+    SPRITES_8x8;
+    set_bkg_data(0, 1, floor);
+    set_bkg_data(1, 2, heart);
+    set_bkg_tiles(0, 0, 0, 0, floor);
+
+    // set up score window
+    SPRITES_8x8;
+    set_win_tiles(0, 0, 0, 0, heart);
+    move_win(0, 128);
+
+
+    SHOW_WIN;
+    SHOW_BKG;
 
 	loadSprites();
 

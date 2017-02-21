@@ -1,8 +1,8 @@
 /*
 
- HEART.C
+ FLOOR.H
 
- Tile Source File.
+ Include File.
 
  Info:
   Form                 : All tiles as one unit.
@@ -10,7 +10,7 @@
   Compression          : None.
   Counter              : None.
   Tile size            : 8 x 8
-  Tiles                : 0 to 1
+  Tiles                : 0 to 0
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -22,13 +22,10 @@
 
 */
 
-/* Start of tile array. */
-unsigned char heart[] =
-{
-  0x00,0x00,0x66,0x66,0x99,0xFF,0xA1,0xDF,
-  0x81,0xFF,0x42,0x7E,0x24,0x3C,0x18,0x18,
-  0x00,0x00,0x66,0x66,0x99,0x99,0x81,0x81,
-  0x81,0x81,0x42,0x42,0x24,0x24,0x18,0x18
-};
 
-/* End of HEART.C */
+/* Bank of tiles. */
+#define floorBank 0
+/* Start of tile array. */
+extern unsigned char floor[];
+
+/* End of FLOOR.H */
