@@ -1,6 +1,6 @@
 /*
 
- FLOOR.H
+ SABRE.H
 
  Include File.
 
@@ -10,7 +10,7 @@
   Compression          : None.
   Counter              : None.
   Tile size            : 8 x 8
-  Tiles                : 0 to 0
+  Tiles                : 0 to 11
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define floorBank 0
+#define sabreBank 0
 /* Start of tile array. */
-extern unsigned char floor[];
+extern unsigned char sabre[];
 
-/* End of FLOOR.H */
+/* End of SABRE.H */

@@ -1,138 +1,92 @@
 #include <gb/gb.h>
+#include <stdio.h>
 #include "malloc.c"
-#include "Sprites\knight.c"
-#include "Sprites\ogre.c"
-#include "Sprites\heart.c"
-#include "Sprites\floor.c"
 
-#define WINSIZEX 0x90
-#define WINSIZEY 0x0F
+#include "bkgTiles/levelOne.c"
+#include "bkgTiles/castle.c"
+#include "bkgTiles/hud.c"
+#include "bkgTiles/hudExample.c"
+
+#include "sprites/sabre.c"
 
 typedef struct {
-    int leftX;
-    int leftY;
-    int rightX;
-    int rightY;
-    int leftSprite;
-    int rightSprite;
-} spriteDouble;
+    UINT8 x;
+    UINT8 y;
+    UINT8 state;
+} spriteData;
 
-    int pcLeftX = 75;  //beginning coords
-    int leftY = 75;
-    int pcRightX = 75 + 8; 
-    int rightY = 75;
-    int enemyOneX = 120;
-    int enemyOneY = 75;
-    int march = 0; 
-    int currentL = 0;
-    int currentR = 2;
-    int spriteHasChanged = 0;
+UINT8 i; // global loop integer
 
-void loadSprites(void) {
-    SPRITES_8x16;
-    set_sprite_data(0, 32, knight);
-    set_sprite_data(32,40, ogre);
-    set_sprite_tile(0, 0);
-    move_sprite(0, pcLeftX, leftY);
-    set_sprite_tile(1, 2);
-    move_sprite(1, pcRightX, rightY);
-    set_sprite_tile(2,32);
-    move_sprite(2, enemyOneX, enemyOneY);
-    set_sprite_tile(3,34);
-    move_sprite(3, enemyOneX + 8, enemyOneY);
+void loadSprites(spriteData * spritePtr) {
+    set_sprite_data(0x00, 0x0C, sabre);
+    set_sprite_tile(0x00, 0x00);
+    set_sprite_tile(0x01, 0x01);
+    set_sprite_tile(0x02, 0x02);
+    set_sprite_tile(0x03, 0x03);
+    set_sprite_tile(0x04, 0x04);
+    set_sprite_tile(0x05, 0x05);
 
-    SHOW_SPRITES;
+    move_sprite(4, spritePtr->x, spritePtr->y + 16);
+    move_sprite(5, spritePtr->x + 8, spritePtr->y + 16);
+    move_sprite(2, spritePtr->x, spritePtr->y + 8);
+    move_sprite(3, spritePtr->x + 8, spritePtr->y + 8);
+    move_sprite(0, spritePtr->x, spritePtr->y);
+    move_sprite(1, spritePtr->x + 8, spritePtr->y);
 }
 
-void spriteChange(int spriteL, int frameL, int spriteR, int frameR) {
-    set_sprite_tile(spriteL, frameL);
-	set_sprite_tile(spriteR, frameR);
+updatePos(spriteData * ptr) {
+	move_sprite(4, ptr->x, ptr->y + 16);
+    move_sprite(5, ptr->x + 8, ptr->y + 16);
+    move_sprite(2, ptr->x, ptr->y + 8);
+    move_sprite(3, ptr->x + 8, ptr->y + 8);
+    move_sprite(0, ptr->x, ptr->y);
+    move_sprite(1, ptr->x + 8, ptr->y);
 }
 
-int collisionDetection() {
-   return 0;
-}
+void userInput(spriteData * ptr) {
+    if (joypad()==J_RIGHT && ptr->x < 153) {
+        ptr->x++;
+        updatePos(ptr);
+    }
 
-void getInput(void) {
-    	if (march == 0) {
-            spriteChange(0,currentL+4,1,currentR+4);
-        }
-        else if (march == 15) {
-            spriteChange(0,currentL,1,currentR);
-        }
-    	if (joypad()==J_RIGHT && pcRightX < 161) 
-    	{
-    		if (currentL != 16) {
-    		    currentL = 16;
-                currentR = 18;
-                spriteHasChanged = 1;
-            }
-            pcLeftX++;
-            pcRightX++;
-            move_sprite(0,pcLeftX,leftY);
-            move_sprite(1,pcRightX,rightY);
-    	}
-    	if (joypad()==J_LEFT && pcLeftX > 0)
-    	{
-    		if (currentL != 24) {
-    		    currentL = 24;
-                currentR = 26;
-                spriteHasChanged = 1;
-            }
-            pcLeftX--;
-            pcRightX--;
-            move_sprite(0,pcLeftX,leftY);
-            move_sprite(1,pcRightX,rightY);
-    	}
-    	if (joypad()==J_UP && leftY > 16 && rightY > 16)
-    	{
-    		if (currentL != 8) {
-    		    currentL = 8;
-                currentR = 10;
-                spriteHasChanged = 1;
-            }
-    		leftY--;
-    		rightY--;
-    		move_sprite(0,pcLeftX,leftY);
-            move_sprite(1,pcRightX,rightY);
-    	}
-    	if (joypad()==J_DOWN && leftY < 144 && rightY < 144)
-    	{
-    		if (currentL != 0) {
-    		    currentL = 0;
-                currentR = 2;
-                spriteHasChanged = 1;
-            }
-    		leftY++;
-    		rightY++;
-    		move_sprite(0,pcLeftX,leftY);
-            move_sprite(1,pcRightX,rightY);
-    	}
-    	if (march < 30 && spriteHasChanged == 0)
-    		march++;
-        else {
-        	march = 0;
-        	spriteHasChanged = 0;
-        }
-        delay(16);
+    if (joypad() == J_LEFT && ptr->x > 0) {
+    	ptr->x--;
+    	updatePos(ptr);
+    }
+    delay(16);
 }
 
 void main(void) {
-    // allocate memory (do this in one chunk eventually)
-    //spriteDouble *player = malloc(sizeof(spriteDouble));
+	// allocate space for sprite position information
+    spriteData * witch = malloc(sizeof(spriteData));
+    witch->state = 0x00;
+    witch->x = 31;
+    witch->y = 96;
 
-    // set up background
-    DISPLAY_OFF;
-    wait_vbl_done();
-    set_bkg_data(0, 1, floor);
-    set_bkg_tiles(0, 0, 0, 0, floor);
+    // pre-start prep
+	wait_vbl_done();
+    SPRITES_8x8;
+   	DISPLAY_OFF;
+
+   	// load background data
+    set_bkg_data(0x00,0x14, castle);
+    set_bkg_tiles(0x00, 0x00, 0x14, 0x10, levelOne);
+
+    // set up HUD window
+    move_win(7,128);
+    set_win_data(0x14,0x05, hud);
+    set_win_tiles(0x00,0x00, 0x14, 0x02, hudExample);
+
+    // load sprites
+    loadSprites(witch);
+
     SHOW_BKG;
-
-	loadSprites();
+    SHOW_WIN;
+    SHOW_SPRITES;
 
     DISPLAY_ON;
 
-    while (1) {
-        getInput();
+    while(1) {
+        userInput(witch);
     }
 }
