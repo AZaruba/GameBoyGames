@@ -1,6 +1,6 @@
 /*
 
- CASTLE.H
+ HUD.H
 
  Include File.
 
@@ -10,7 +10,7 @@
   Compression          : None.
   Counter              : None.
   Tile size            : 8 x 8
-  Tiles                : 0 to 19
+  Tiles                : 0 to 4
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define castleBank 0
+#define hudBank 0
 /* Start of tile array. */
-extern unsigned char castle[];
+extern unsigned char hud[];
 
-/* End of CASTLE.H */
+/* End of HUD.H */

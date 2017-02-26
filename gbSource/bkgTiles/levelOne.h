@@ -5,11 +5,11 @@
  Map Include File.
 
  Info:
-   Section       : 
+   Section       : i
    Bank          : 0
-   Map size      : 10 x 10
-   Tile set      : C:\Users\abzar\Documents\GBDTools\GameBoyGames\gbSource\bkgTiles\castle.gbr
-   Plane count   : 0.5 plane (4 bits)
+   Map size      : 20 x 16
+   Tile set      : C:\Users\abzar\Documents\workspace\GameBoy\GameBoyGames\gbSource\bkgTiles\castle.gbr
+   Plane count   : 1 plane (8 bits)
    Plane order   : Tiles are continues
    Tile offset   : 0
    Split data    : No
@@ -18,8 +18,8 @@
 
 */
 
-#define levelOneWidth 10
-#define levelOneHeight 10
+#define levelOneWidth 20
+#define levelOneHeight 16
 #define levelOneBank 0
 
 extern unsigned char levelOne[];
