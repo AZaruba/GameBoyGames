@@ -13,10 +13,12 @@ typedef struct {
     UINT8 x;
     UINT8 y;
     INT8 g;
-    UINT8 state;
+    UINT8 state; // 0th ground/air, 1st fall/rise, 2nd free/hitstun
 } spriteData;
 
 UINT8 i; // global loop integer
+UINT8 t; // global timing counter
+UINT8 h; // which buttons are being held down?
 
 /*
  * loads player sprite
@@ -55,9 +57,12 @@ void updatePos(spriteData * ptr) {
  */
 UINT8 collision(spriteData * ptr) {
 	UINT8 edges = 0x00;
-	if (ptr->y <= 112) {
+	if (ptr->y >= 112) {
 		ptr->y = 112;
-		edges += 0x01;
+		edges = edges | 0x01;
+	}
+	else {
+		edges = edges & 0xFE;
 	}
 	return edges;
 }
@@ -65,10 +70,18 @@ UINT8 collision(spriteData * ptr) {
 void gravity(spriteData * ptr) {
     if ((collision(ptr) & 0x01) && ptr->g <= 0) {
     	ptr->g = 0;
+    	ptr->state = ptr->state & 0xFE; // set state bit 1 to grounded
     	return;
     }
     else {
-    	if (ptr->g > -2) {
+    	if (ptr->g > 0 && t%(4 * ptr->g) == 0) {
+            ptr->g--;
+    	}
+    	if (ptr->g == 0) {
+    		ptr->state = ptr->state & 0xFD; // set state bit 2 to falling
+    		ptr->g--;
+    	}
+    	if ((ptr->g > -2 && ptr->g < 0)){
     	    ptr->g--;
     	}
     	ptr->y = ptr->y - ptr->g;
@@ -79,6 +92,7 @@ void gravity(spriteData * ptr) {
  * gathers user input and updates the position of the PC
  */
 void userInput(spriteData * ptr) {
+	if (!(joypad() & J_A)) { h = h & !(J_A); }
 
     if (joypad() & J_RIGHT && ptr->x < 153) {
         ptr->x++;
@@ -87,10 +101,16 @@ void userInput(spriteData * ptr) {
     if (joypad() & J_LEFT && ptr->x > 7) {
     	ptr->x--;
     }
-    if (joypad() & J_A  && (collision(ptr) & 0x01) ) {
-    	ptr->g = 5;
+    if (joypad() & J_A && !(h & J_A) && (collision(ptr) & 0x01) && !(ptr->state & 0x01)) {
+    	ptr->g = 2;
+    	ptr->state = ptr->state | 0x01; // set state bit 1 to air
+    	ptr->state = ptr->state | 0x03; // set state bit 2 to rising
+    	h = h | J_A;
     }
-    gravity(ptr);
+
+    if (t%1 == 0) {
+        gravity(ptr);
+    }
     updatePos(ptr);
     delay(16);
 }
@@ -100,8 +120,8 @@ void main(void) {
     spriteData * witch = malloc(sizeof(spriteData));
     witch->state = 0x00;
     witch->g = 0;
-    witch->x = 31;
-    witch->y = 40;
+    witch->x = 63;
+    witch->y = 8;
 
     // pre-start prep
 	wait_vbl_done();
@@ -123,11 +143,13 @@ void main(void) {
     SHOW_BKG;
     SHOW_WIN;
     SHOW_SPRITES;
+    t = 0;
 
     DISPLAY_ON;
 
     while(1) {
         userInput(witch);
-
+        if (t == 60) { t = 0; }
+        else { t++; }
     }
 }
