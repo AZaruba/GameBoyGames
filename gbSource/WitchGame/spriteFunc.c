@@ -21,8 +21,12 @@ void loadSprites(spriteData * spritePtr) {
     move_sprite(1, spritePtr->x + 8, spritePtr->y);
 }
 
+void updateSprite(spriteData * ptr) {
+	
+}
+
 /*
- * updates the position of the sprite (WIP)
+ * updates the position and data of the sprite (WIP)
  */
 void updatePos(spriteData * ptr) {
 	move_sprite(4, ptr->x, ptr->y + 16);

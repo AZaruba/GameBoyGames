@@ -18,6 +18,11 @@ UINT8 collision(spriteData * ptr) {
 	return edges;
 }
 
+/* performs changes to gravity, respective to collision
+ * TODO: fix jumping "feel" and speed
+ *       fix modulo glitch (where jumping height is dependent on time)
+ */
+
 void gravity(spriteData * ptr, UINT8 t) {
     if ((collision(ptr) & 0x01) && ptr->g <= 0) {
     	ptr->g = 0;

@@ -21,13 +21,19 @@ UINT8 h; // which buttons are being held down?
 void userInput(spriteData * ptr, UINT8 timing) {
 	if (!(joypad() & J_A)) { h = h & !(J_A); }
 
+    // move right and update state to face right
     if (joypad() & J_RIGHT && ptr->x < 153) {
+    	ptr->state = ptr->state & 0xF7;
         ptr->x++;
     }
 
+    // move left and update state to face left
     if (joypad() & J_LEFT && ptr->x > 7) {
+    	ptr->state = ptr->state | 0x08;
     	ptr->x--;
     }
+
+    // jump IFF grounded and A is pressed while not held
     if (joypad() & J_A && !(h & J_A) && (collision(ptr) & 0x01) && !(ptr->state & 0x01)) {
     	ptr->g = 2;
     	ptr->state = ptr->state | 0x01; // set state bit 1 to air
@@ -35,6 +41,7 @@ void userInput(spriteData * ptr, UINT8 timing) {
     	h = h | J_A;
     }
 
+    // handle gravity only on some frames (as it is VERY fast at 60hz)
     if (timing%1 == 0) {
         gravity(ptr, timing);
     }
