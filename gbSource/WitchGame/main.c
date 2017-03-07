@@ -14,6 +14,7 @@
 
 UINT8 t; // global timing counter
 UINT8 h; // which buttons are being held down?
+UINT8 vr; // how far along VRAM are we?
 
 /*
  * gathers user input and updates the position of the PC
@@ -62,7 +63,6 @@ void userInput(spriteData * ptr, UINT8 timing) {
 
 // main function
 void main(void) {
-
     spriteData * witch = malloc(sizeof(spriteData));
     witch->state = 0x00;
     witch->g = 0;
@@ -83,12 +83,14 @@ void main(void) {
     set_win_tiles(0x00,0x00, 0x14, 0x02, hudExample);
 
     // load sprites
-    loadSprites(witch);
+    loadSprites(witch, vr, 0x29, sabre);
+    vr = vr + 0x2F;
 
     SHOW_BKG;
     SHOW_WIN;
     SHOW_SPRITES;
     t = 0;
+    vr = 0;
 
     DISPLAY_ON;
     while(1) {
