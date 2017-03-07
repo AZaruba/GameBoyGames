@@ -3,6 +3,8 @@
 
 #include "sprites/sabre.c"
 
+UINT8 i; //
+
 // load sprites to the specified locations (WIP)
 void loadSprites(spriteData * spritePtr) {
     set_sprite_data(0x00, 0x0C, sabre);
@@ -21,8 +23,21 @@ void loadSprites(spriteData * spritePtr) {
     move_sprite(1, spritePtr->x + 8, spritePtr->y);
 }
 
-void updateSprite(spriteData * ptr) {
-	
+/*
+ * updates a given sprite relative to its first frame (frame 0)
+ *
+ * sprite - where in memory the sprite begins
+ * size - how big the sprite is
+ * frame - which frame it is (each frame of a sprite will be stored sequentially)
+ * TODO: decide format for storing sprites (sprites 0-6 will be PC,
+ * 7-8 will be sword and 9-10 will be projectiles)
+ */
+void updateSprite(UINT8 sprite, UINT8 size, UINT8 frame) {
+	// loop for every 8x8 tile in the sprite
+	for (i = 0; i < size, i++) {
+		// sprite data starts at sprite, each frame is length size
+		set_sprite_tile(sprite + i, sprite + frame + i);
+	}
 }
 
 /*

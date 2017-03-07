@@ -8,6 +8,7 @@
  */
 UINT8 collision(spriteData * ptr) {
 	UINT8 edges = 0x00;
+	// current implementation just checks if the PC is above the floor
 	if (ptr->y >= 112) {
 		ptr->y = 112;
 		edges = edges | 0x01;
@@ -22,13 +23,15 @@ UINT8 collision(spriteData * ptr) {
  * TODO: fix jumping "feel" and speed
  *       fix modulo glitch (where jumping height is dependent on time)
  */
-
 void gravity(spriteData * ptr, UINT8 t) {
+	// checks if there is ground below the character
     if ((collision(ptr) & 0x01) && ptr->g <= 0) {
     	ptr->g = 0;
     	ptr->state = ptr->state & 0xFE; // set state bit 1 to grounded
     	return;
     }
+
+    // gravity function, on what frames do we update position
     else {
     	if (ptr->g > 0 && t%(4 * ptr->g) == 0) {
             ptr->g--;

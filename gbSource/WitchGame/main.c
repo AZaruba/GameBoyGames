@@ -19,16 +19,27 @@ UINT8 h; // which buttons are being held down?
  * gathers user input and updates the position of the PC
  */
 void userInput(spriteData * ptr, UINT8 timing) {
+	// make sure A isn't being held down (cancels Bunny hopping)
 	if (!(joypad() & J_A)) { h = h & !(J_A); }
 
     // move right and update state to face right
     if (joypad() & J_RIGHT && ptr->x < 153) {
+    	// if we change direction, change sprite
+    	if (ptr->state & 0x08) {
+
+    	}
+
     	ptr->state = ptr->state & 0xF7;
         ptr->x++;
     }
 
     // move left and update state to face left
     if (joypad() & J_LEFT && ptr->x > 7) {
+    	// if we change direction, change sprite
+    	if (!(ptr->state & 0x08)) {
+
+    	}
+
     	ptr->state = ptr->state | 0x08;
     	ptr->x--;
     }
