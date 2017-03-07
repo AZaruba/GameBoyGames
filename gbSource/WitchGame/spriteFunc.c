@@ -34,7 +34,7 @@ void loadSprites(spriteData * spritePtr) {
  */
 void updateSprite(UINT8 sprite, UINT8 size, UINT8 frame) {
 	// loop for every 8x8 tile in the sprite
-	for (i = 0; i < size, i++) {
+	for (i = 0; i < size; i++) {
 		// sprite data starts at sprite, each frame is length size
 		set_sprite_tile(sprite + i, sprite + frame + i);
 	}
