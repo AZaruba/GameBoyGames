@@ -14,11 +14,11 @@ UINT8 i; // global loop counter
  * TODO: decide format for storing sprites (sprites 0-6 will be PC,
  * 7-8 will be sword and 9-10 will be projectiles)
  */
-void updateSprite(UINT8 sprite, UINT8 size, UINT8 frame) {
+void updateSprite(UINT8 sprite, UINT8 data, UINT8 size, UINT8 frame) {
 	// loop for every 8x8 tile in the sprite
 	for (i = 0; i < size; i++) {
 		// sprite data starts at sprite, each frame is length size
-		set_sprite_tile(sprite + i, sprite + (size * frame) + i);
+		set_sprite_tile(sprite + i, data + (size * frame) + i);
 	}
 }
 
@@ -26,14 +26,15 @@ void updateSprite(UINT8 sprite, UINT8 size, UINT8 frame) {
 void loadSprites(spriteData * spritePtr, UINT8 vr, UINT8 tileCount, char* name) {
     set_sprite_data(vr, tileCount, name);
 
-    updateSprite(0x00, 0x06, 0x00);
+    updateSprite(0x00, 0x00, 0x02, 0x00);
+    updateSprite(0x02, 0x04, 0x04, 0x00);
 
-    move_sprite(0, spritePtr->x, spritePtr->y + 16);
-    move_sprite(1, spritePtr->x + 8, spritePtr->y + 16);
+    move_sprite(0, spritePtr->x, spritePtr->y);
+    move_sprite(1, spritePtr->x + 8, spritePtr->y);
     move_sprite(2, spritePtr->x, spritePtr->y + 8);
     move_sprite(3, spritePtr->x + 8, spritePtr->y + 8);
-    move_sprite(4, spritePtr->x, spritePtr->y);
-    move_sprite(5, spritePtr->x + 8, spritePtr->y);
+    move_sprite(4, spritePtr->x, spritePtr->y + 16);
+    move_sprite(5, spritePtr->x + 8, spritePtr->y + 16);
 }
 
 /*
