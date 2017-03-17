@@ -18,7 +18,7 @@ void updateSprite(UINT8 sprite, UINT8 size, UINT8 frame) {
 	// loop for every 8x8 tile in the sprite
 	for (i = 0; i < size; i++) {
 		// sprite data starts at sprite, each frame is length size
-		set_sprite_tile(sprite + i, sprite + frame + i);
+		set_sprite_tile(sprite + i, sprite + (size * frame) + i);
 	}
 }
 
@@ -28,12 +28,12 @@ void loadSprites(spriteData * spritePtr, UINT8 vr, UINT8 tileCount, char* name) 
 
     updateSprite(0x00, 0x06, 0x00);
 
-    move_sprite(0, spritePtr->x, spritePtr->y);
-    move_sprite(1, spritePtr->x + 8, spritePtr->y);
+    move_sprite(0, spritePtr->x, spritePtr->y + 16);
+    move_sprite(1, spritePtr->x + 8, spritePtr->y + 16);
     move_sprite(2, spritePtr->x, spritePtr->y + 8);
     move_sprite(3, spritePtr->x + 8, spritePtr->y + 8);
-    move_sprite(4, spritePtr->x, spritePtr->y + 16);
-    move_sprite(5, spritePtr->x + 8, spritePtr->y + 16);
+    move_sprite(4, spritePtr->x, spritePtr->y);
+    move_sprite(5, spritePtr->x + 8, spritePtr->y);
 }
 
 /*
