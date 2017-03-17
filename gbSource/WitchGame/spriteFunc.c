@@ -8,7 +8,8 @@ UINT8 i; // global loop counter
 /*
  * updates a given sprite relative to its first frame (frame 0)
  *
- * sprite - where in memory the sprite begins
+ * sprite - index of sprite in tile directory
+ * data - where in VRAM the sprite's animation frames begins
  * size - how big the sprite is
  * frame - which frame it is (each frame of a sprite will be stored sequentially)
  * TODO: decide format for storing sprites (sprites 0-6 will be PC,

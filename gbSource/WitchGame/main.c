@@ -27,7 +27,8 @@ void userInput(spriteData * ptr, UINT8 timing) {
     if (joypad() & J_RIGHT && ptr->x < 153) {
     	// if we change direction, change sprite
     	if (ptr->state & 0x08) {
-            //updateSprite(0x00, 0x02, 0x0C);
+            updateSprite(0x00, 0x00, 0x02, 0x00);
+            updateSprite(0x02, 0x04, 0x04, 0x00);
     	}
 
     	ptr->state = ptr->state & 0xF7;
@@ -38,7 +39,8 @@ void userInput(spriteData * ptr, UINT8 timing) {
     if (joypad() & J_LEFT && ptr->x > 7) {
     	// if we change direction, change sprite
     	if (!(ptr->state & 0x08)) {
-
+            updateSprite(0x00, 0x00, 0x02, 0x01);
+            updateSprite(0x02, 0x04, 0x04, 0x05);
     	}
 
     	ptr->state = ptr->state | 0x08;
