@@ -31,6 +31,15 @@ void userInput(spriteData * ptr, UINT8 timing) {
             updateSprite(0x02, 0x04, 0x04, 0x00);
     	}
 
+        // walking animation on ground
+        if ((collision(ptr) & 0x01)) {
+            if (timing%30 == 0) {
+        	    updateSprite(0x02, 0x04, 0x04, 0x01);
+            } else if (timing%30 == 15) {
+                updateSprite(0x02, 0x04, 0x04, 0x02);
+            }
+        }
+
     	ptr->state = ptr->state & 0xF7;
         ptr->x++;
     }
@@ -43,6 +52,15 @@ void userInput(spriteData * ptr, UINT8 timing) {
             updateSprite(0x02, 0x04, 0x04, 0x05);
     	}
 
+ 	   // walking animation on ground
+    	if ((collision(ptr) & 0x01)) {
+        	if (timing%30 == 0) {
+        		updateSprite(0x02, 0x04, 0x04, 0x06);
+     	   } else if (timing%30 == 15) {
+        	    updateSprite(0x02, 0x04, 0x04, 0x07);
+       	 }
+    }	
+
     	ptr->state = ptr->state | 0x08;
     	ptr->x--;
     }
@@ -54,6 +72,7 @@ void userInput(spriteData * ptr, UINT8 timing) {
     	ptr->state = ptr->state | 0x03; // set state bit 2 to rising
     	h = h | J_A;
     }
+
 
     // handle gravity only on some frames (as it is VERY fast at 60hz)
     if (timing%1 == 0) {
