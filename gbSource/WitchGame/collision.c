@@ -8,11 +8,18 @@
  */
 UINT8 collision(spriteData * ptr) {
 	UINT8 edges = 0x00;
+    UINT8 bkgColH = ptr->x >> 3; // horiz tile occupied by sprite
+    UINT8 bkgColV = ptr->y >> 3; // vert tile occupied by sprite
 	// current implementation just checks if the PC is above the floor
-	if (ptr->y >= 112) {
-		ptr->y = 112;
-		edges = edges | 0x01;
-	}
+	//if (ptr->y >= 112) {
+	//	ptr->y = 112;
+	//	edges = edges | 0x01;
+	//}
+    if (bkgColV >= 14) {
+        ptr->y = 112;
+        edges = edges | 0x01;
+    }
+    // here goes calculations on loaded background tiles
 	else {
 		edges = edges & 0xFE;
 	}

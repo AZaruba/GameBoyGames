@@ -13,6 +13,7 @@
 //#include "sprites/sabre.c"
 
 UINT8 t; // global timing counter
+UINT8 gr; // gravity timer
 UINT8 h; // which buttons are being held down?
 UINT8 vr; // how far along VRAM are we?
 
@@ -76,7 +77,7 @@ void userInput(spriteData * ptr, UINT8 timing) {
 
     // handle gravity only on some frames (as it is VERY fast at 60hz)
     if (timing%1 == 0) {
-        gravity(ptr, timing);
+        gravity(ptr, gr);
     }
     updatePos(ptr);
     delay(16);
