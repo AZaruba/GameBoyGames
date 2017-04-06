@@ -6,7 +6,7 @@
 /*
  * checks collision between player character and various objects
  */
-UINT8 collision(spriteData * ptr) {
+UINT8 collision(spriteData * ptr, unsigned char * block) {
 	UINT8 edges = 0x00;
     UINT8 bkgColH = ptr->x >> 3; // horiz tile occupied by sprite
     UINT8 bkgColV = ptr->y >> 3; // vert tile occupied by sprite
@@ -20,6 +20,16 @@ UINT8 collision(spriteData * ptr) {
         edges = edges | 0x01;
     }
     // here goes calculations on loaded background tiles
+    bkgColV++;
+    get_bkg_tiles(bkgColH, bkgColV, 0x01, 0x01, block);
+    if (*block == 0x0F || *block == 0x0D) {
+        edges = edges | 0x01;
+    }
+    get_bkg_tiles(bkgColH + 1, bkgColV, 0x01, 0x01, block);
+    if (*block == 0x0F || *block == 0x0D) {
+        edges = edges | 0x01;
+    }
+
 	else {
 		edges = edges & 0xFE;
 	}
@@ -30,9 +40,9 @@ UINT8 collision(spriteData * ptr) {
  * TODO: fix jumping "feel" and speed
  *       fix modulo glitch (where jumping height is dependent on time)
  */
-void gravity(spriteData * ptr, UINT8 t) {
+void gravity(spriteData * ptr, unsigned char * block, UINT8 t) {
 	// checks if there is ground below the character
-    if ((collision(ptr) & 0x01) && ptr->g <= 0) {
+    if ((collision(ptr, block) & 0x01) && ptr->g <= 0) {
     	ptr->g = 0;
     	ptr->state = ptr->state & 0xFE; // set state bit 1 to grounded
     	return;

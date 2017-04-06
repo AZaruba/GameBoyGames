@@ -16,6 +16,7 @@ UINT8 t; // global timing counter
 UINT8 gr; // gravity timer
 UINT8 h; // which buttons are being held down?
 UINT8 vr; // how far along VRAM are we?
+unsigned char *collider; // pointer where we store background tiles for collision
 
 /*
  * gathers user input and updates the position of the PC
@@ -33,7 +34,7 @@ void userInput(spriteData * ptr, UINT8 timing) {
     	}
 
         // walking animation on ground
-        if ((collision(ptr) & 0x01)) {
+        if ((collision(ptr, collider) & 0x01)) {
             if (timing%30 == 0) {
         	    updateSprite(0x02, 0x04, 0x04, 0x01);
             } else if (timing%30 == 15) {
@@ -54,7 +55,7 @@ void userInput(spriteData * ptr, UINT8 timing) {
     	}
 
  	   // walking animation on ground
-    	if ((collision(ptr) & 0x01)) {
+    	if ((collision(ptr, collider) & 0x01)) {
         	if (timing%30 == 0) {
         		updateSprite(0x02, 0x04, 0x04, 0x06);
      	   } else if (timing%30 == 15) {
@@ -86,6 +87,8 @@ void userInput(spriteData * ptr, UINT8 timing) {
 // main function
 void main(void) {
     spriteData * witch = malloc(sizeof(spriteData));
+    collider = malloc(sizeof(unsigned char));
+
     witch->state = 0x00;
     witch->g = 0;
     witch->x = 31;
