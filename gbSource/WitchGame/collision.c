@@ -54,14 +54,14 @@ void gravity(spriteData * ptr, unsigned char * block, UINT8 *t) {
 
     // gravity function, on what frames do we update position
     else {
-    	if (ptr->g > 0 && *t%(4 * ptr->g) == 0) {
+    	if (ptr->g > 0 && *t%(2 * ptr->g) == 0) {
             ptr->g--;
     	}
-    	if (ptr->g == 0) {
+    	if (ptr->g == 0 && *t%(2 * ptr->g) == 0) {
     		ptr->state = ptr->state & 0xFD; // set state bit 2 to falling
     		ptr->g--;
     	}
-    	if ((ptr->g > -2 && ptr->g < 0)){
+    	if ((ptr->g > -2 && ptr->g < 0 && *t%(2 * ptr->g) == 0)){
     	    ptr->g--;
     	}
     	ptr->y = ptr->y - ptr->g;

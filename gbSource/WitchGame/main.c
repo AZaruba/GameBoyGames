@@ -69,7 +69,7 @@ void userInput(spriteData * ptr, UINT8 timing) {
 
     // jump IFF grounded and A is pressed while not held
     if (joypad() & J_A && !(h & J_A) && (collision(ptr) & 0x01) && !(ptr->state & 0x01)) {
-    	ptr->g = 3;
+    	ptr->g = 8;
     	ptr->state = ptr->state | 0x01; // set state bit 1 to air
     	ptr->state = ptr->state | 0x03; // set state bit 2 to rising
     	h = h | J_A;
