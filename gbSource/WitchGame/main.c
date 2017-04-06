@@ -13,7 +13,7 @@
 //#include "sprites/sabre.c"
 
 UINT8 t; // global timing counter
-UINT8 gr; // gravity timer
+UINT8 *gr; // gravity timer
 UINT8 h; // which buttons are being held down?
 UINT8 vr; // how far along VRAM are we?
 unsigned char *collider; // pointer where we store background tiles for collision
@@ -78,7 +78,7 @@ void userInput(spriteData * ptr, UINT8 timing) {
 
     // handle gravity only on some frames (as it is VERY fast at 60hz)
     if (timing%1 == 0) {
-        gravity(ptr, gr);
+        gravity(ptr, collider, gr);
     }
     updatePos(ptr);
     delay(16);
@@ -88,6 +88,7 @@ void userInput(spriteData * ptr, UINT8 timing) {
 void main(void) {
     spriteData * witch = malloc(sizeof(spriteData));
     collider = malloc(sizeof(unsigned char));
+    gr = malloc(sizeof(UINT8));
 
     witch->state = 0x00;
     witch->g = 0;
