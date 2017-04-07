@@ -30,7 +30,10 @@ void userInput(spriteData * ptr, UINT8 timing) {
     	// if we change direction, change sprite
     	if (ptr->state & 0x08) {
             updateSprite(0x00, 0x00, 0x02, 0x00);
-            updateSprite(0x02, 0x04, 0x04, 0x00);
+            if (ptr->state & 0x01) 
+                updateSprite(0x02, 0x04, 0x04, 0x00);
+            else
+                updateSprite(0x02, 0x04, 0x04, 0x02);
     	}
 
         // walking animation on ground
@@ -44,6 +47,8 @@ void userInput(spriteData * ptr, UINT8 timing) {
 
     	ptr->state = ptr->state & 0xF7;
         ptr->x++;
+        //st++;
+
     }
 
     // move left and update state to face left
@@ -51,7 +56,10 @@ void userInput(spriteData * ptr, UINT8 timing) {
     	// if we change direction, change sprite
     	if (!(ptr->state & 0x08)) {
             updateSprite(0x00, 0x00, 0x02, 0x01);
-            updateSprite(0x02, 0x04, 0x04, 0x05);
+            if (ptr->state & 0x01)
+              updateSprite(0x02, 0x04, 0x04, 0x05);
+            else
+              updateSprite(0x02, 0x04, 0x04, 0x07);
     	}
 
  	   // walking animation on ground
@@ -65,6 +73,7 @@ void userInput(spriteData * ptr, UINT8 timing) {
 
     	ptr->state = ptr->state | 0x08;
     	ptr->x--;
+        //st++;
     }
 
     // jump IFF grounded and A is pressed while not held
@@ -73,6 +82,10 @@ void userInput(spriteData * ptr, UINT8 timing) {
     	ptr->state = ptr->state | 0x01; // set state bit 1 to air
     	ptr->state = ptr->state | 0x03; // set state bit 2 to rising
     	h = h | J_A;
+        if (ptr->state & 0x08)
+            updateSprite(0x02, 0x04, 0x04, 0x05);
+        else
+            updateSprite(0x02, 0x04, 0x04, 0x00);
     }
 
 
@@ -87,7 +100,7 @@ void userInput(spriteData * ptr, UINT8 timing) {
 // main function
 void main(void) {
     spriteData * witch = malloc(sizeof(spriteData));
-    collider = malloc(sizeof(unsigned char));
+    collider = malloc(sizeof(unsigned char) * 2);
     gr = malloc(sizeof(UINT8));
 
     witch->state = 0x00;
@@ -116,6 +129,7 @@ void main(void) {
     SHOW_WIN;
     SHOW_SPRITES;
     t = 0;
+    //st = 0;
     vr = 0;
 
     DISPLAY_ON;
