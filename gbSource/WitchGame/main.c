@@ -42,7 +42,9 @@ void userInput(spriteData * ptr, gameData * stats) {
 
     	ptr->state = ptr->state & 0xF7;
         ptr->x++;
+
         stats->st++;
+
     }
 
     // move left and update state to face left
@@ -122,6 +124,7 @@ void main(void) {
     SHOW_BKG;
     SHOW_WIN;
     SHOW_SPRITES;
+<<<<<<< HEAD
     stats->t = 0;
     stats->vr = 0;
 
