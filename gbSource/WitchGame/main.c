@@ -12,18 +12,12 @@
 
 //#include "sprites/sabre.c"
 
-UINT8 t; // global timing counter
-UINT8 *gr; // gravity timer
-UINT8 h; // which buttons are being held down?
-UINT8 vr; // how far along VRAM are we?
-unsigned char *collider; // pointer where we store background tiles for collision
-
 /*
  * gathers user input and updates the position of the PC
  */
-void userInput(spriteData * ptr, UINT8 timing) {
+void userInput(spriteData * ptr, gameData * stats) {
 	// make sure A isn't being held down (cancels Bunny hopping)
-	if (!(joypad() & J_A)) { h = h & !(J_A); }
+	if (!(joypad() & J_A)) { stats->h = stats->h & !(J_A); }
 
     // move right and update state to face right
     if (joypad() & J_RIGHT && ptr->x < 153) {
@@ -34,16 +28,17 @@ void userInput(spriteData * ptr, UINT8 timing) {
     	}
 
         // walking animation on ground
-        if ((collision(ptr, collider) & 0x01)) {
-            if (timing%30 == 0) {
+        if ((collision(ptr, stats) & 0x01)) {
+            if (stats->st%30 == 0) {
         	    updateSprite(0x02, 0x04, 0x04, 0x01);
-            } else if (timing%30 == 15) {
+            } else if (stats->st%30 == 15) {
                 updateSprite(0x02, 0x04, 0x04, 0x02);
             }
         }
 
     	ptr->state = ptr->state & 0xF7;
         ptr->x++;
+        stats->st++;
     }
 
     // move left and update state to face left
@@ -55,30 +50,31 @@ void userInput(spriteData * ptr, UINT8 timing) {
     	}
 
  	   // walking animation on ground
-    	if ((collision(ptr, collider) & 0x01)) {
-        	if (timing%30 == 0) {
+    	if ((collision(ptr, stats) & 0x01)) {
+        	if (stats->st%30 == 0) {
         		updateSprite(0x02, 0x04, 0x04, 0x06);
-     	   } else if (timing%30 == 15) {
+     	   } else if (stats->st%30 == 15) {
         	    updateSprite(0x02, 0x04, 0x04, 0x07);
        	 }
     }	
 
     	ptr->state = ptr->state | 0x08;
     	ptr->x--;
+        stats->st++;
     }
 
     // jump IFF grounded and A is pressed while not held
-    if (joypad() & J_A && !(h & J_A) && (collision(ptr) & 0x01) && !(ptr->state & 0x01)) {
-    	ptr->g = 8;
+    if (joypad() & J_A && !(stats->h & J_A) && (collision(ptr) & 0x01) && !(ptr->state & 0x01)) {
+    	ptr->g = 2;
     	ptr->state = ptr->state | 0x01; // set state bit 1 to air
     	ptr->state = ptr->state | 0x03; // set state bit 2 to rising
-    	h = h | J_A;
+    	stats->h = stats->h | J_A;
     }
 
 
     // handle gravity only on some frames (as it is VERY fast at 60hz)
-    if (timing%1 == 0) {
-        gravity(ptr, collider, gr);
+    if (stats->t%1 == 0) {
+        gravity(ptr, stats);
     }
     updatePos(ptr);
     delay(16);
@@ -87,8 +83,7 @@ void userInput(spriteData * ptr, UINT8 timing) {
 // main function
 void main(void) {
     spriteData * witch = malloc(sizeof(spriteData));
-    collider = malloc(sizeof(unsigned char));
-    gr = malloc(sizeof(UINT8));
+    gameData * stats = malloc(sizeof(gameData));
 
     witch->state = 0x00;
     witch->g = 0;
@@ -109,19 +104,19 @@ void main(void) {
     set_win_tiles(0x00,0x00, 0x14, 0x02, hudExample);
 
     // load sprites
-    loadSprites(witch, vr, 0x29, sabre);
-    vr = vr + 0x2F;
+    loadSprites(witch, stats->vr, 0x29, sabre);
+    stats->vr = stats->vr + 0x2F;
 
     SHOW_BKG;
     SHOW_WIN;
     SHOW_SPRITES;
-    t = 0;
-    vr = 0;
+    stats->t = 0;
+    stats->vr = 0;
 
     DISPLAY_ON;
     while(1) {
-        userInput(witch, t);
-        if (t == 60) { t = 0; }
-        else { t++; }
+        userInput(witch, stats);
+        if (stats->t == 60) { stats->t = 0; }
+        else { stats->t++; }
     }
 }

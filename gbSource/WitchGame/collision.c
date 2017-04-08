@@ -6,7 +6,7 @@
 /*
  * checks collision between player character and various objects
  */
-UINT8 collision(spriteData * ptr, unsigned char * block) {
+UINT8 collision(spriteData * ptr, gameData * stats) {
 	UINT8 edges = 0x00;
     //UINT8 bkgColH = ptr->x; // horiz tile occupied by sprite
     //UINT8 bkgColV = ptr->y; // vert tile occupied by sprite
@@ -43,28 +43,29 @@ UINT8 collision(spriteData * ptr, unsigned char * block) {
  * TODO: fix jumping "feel" and speed
  *       fix modulo glitch (where jumping height is dependent on time)
  */
-void gravity(spriteData * ptr, unsigned char * block, UINT8 *t) {
+void gravity(spriteData * ptr, gameData * stats) {
 	// checks if there is ground below the character
-    if ((collision(ptr, block) & 0x01) && ptr->g <= 0) {
+    if ((collision(ptr, stats->collider) & 0x01) && ptr->g <= 0) {
     	ptr->g = 0;
     	ptr->state = ptr->state & 0xFE; // set state bit 1 to grounded
-        *t = 0; // reset gravity timer
+        stats->gr = 0; // reset gravity timer
     	return;
     }
 
     // gravity function, on what frames do we update position
     else {
-    	if (ptr->g > 0 && *t%(2 * ptr->g) == 0) {
+    	if (ptr->g > 0 && stats->gr%4 == 0) {
             ptr->g--;
     	}
-    	if (ptr->g == 0 && *t%(2 * ptr->g) == 0) {
+    	if (ptr->g == 0 && stats->gr%4 == 0) {
     		ptr->state = ptr->state & 0xFD; // set state bit 2 to falling
     		ptr->g--;
     	}
-    	if ((ptr->g > -2 && ptr->g < 0 && *t%(2 * ptr->g) == 0)){
+    	if ((ptr->g > -2 && ptr->g < 0 && stats->gr%4 == 0)){
     	    ptr->g--;
     	}
     	ptr->y = ptr->y - ptr->g;
-        *t++;
+        stats->t++;
+        stats->gr++;
     }
 }

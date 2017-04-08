@@ -16,3 +16,13 @@ typedef struct {
                   * 4 - 7 			unused... for now :)
                   */
 } spriteData;
+
+typedef struct {
+  UINT8 t;  // global timer
+  UINT8 st; // sprite frame timer
+  UINT8 gr; // gravity timer
+  UINT8 h;  // which buttons are being held down?
+  UINT8 vr; // how far along are we in vram?
+  UINT8 collider; // store tiles for collision detection here
+
+} gameData;
