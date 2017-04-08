@@ -124,7 +124,7 @@ void main(void) {
     SHOW_BKG;
     SHOW_WIN;
     SHOW_SPRITES;
-<<<<<<< HEAD
+    
     stats->t = 0;
     stats->vr = 0;
 
