@@ -75,7 +75,7 @@ void userInput(spriteData * ptr, gameData * stats) {
 
     // jump IFF grounded and A is pressed while not held
     if (joypad() & J_A && !(stats->h & J_A) && (collision(ptr) & 0x01) && !(ptr->state & 0x01)) {
-    	ptr->g = 2;
+    	ptr->g = 4;
         if (ptr->state & 0x08)
             updateSprite(0x02, 0x04, 0x04, 0x05);
         else

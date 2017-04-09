@@ -8,31 +8,33 @@
  */
 UINT8 collision(spriteData * ptr, gameData * stats) {
 	UINT8 edges = 0x00;
-    //UINT8 bkgColH = ptr->x; // horiz tile occupied by sprite
-    //UINT8 bkgColV = ptr->y; // vert tile occupied by sprite
-    //bkgColH = bkgColH >> 3;
-    //bkgColV = bkgColV >> 3;
+    UINT8 bkgColH = ptr->x; // horiz tile occupied by sprite
+    UINT8 bkgColV = ptr->y; // vert tile occupied by sprite
+    bkgColH = bkgColH >> 3;
+    bkgColV = bkgColV >> 3;
 
     // here goes calculations on loaded background tiles
-    //bkgColV++;
-    //get_bkg_tiles(bkgColH, bkgColV, 0x01, 0x01, block);
-    //if (bkgColV >= 14) {
-    //    ptr->y = 112;
-    //    edges = edges | 0x01;
-    //} 
+    bkgColV++;
+    get_bkg_tiles(bkgColH, bkgColV, 0x01, 0x01, &stats->collider);
+    if (bkgColV >= 15) {
+        ptr->y = 112;
+        edges = edges | 0x01;
+    } 
 
-    //else if (*block == 0x0F || *block == 0x0D){
-    //    edges = edges | 0x01;
-    //}
-
-    //get_bkg_tiles(bkgColH + 1, bkgColV, 0x01, 0x01, block);
-    //if (*block == 0x0F || *block == 0x0D) {
-    //    edges = edges | 0x01;
-    //}
-    if (ptr->y >= 112) {
+    else if (stats->collider == 0x0F || stats->collider == 0x0D){
         ptr->y = 112;
         edges = edges | 0x01;
     }
+
+    get_bkg_tiles(bkgColH + 1, bkgColV, 0x01, 0x01, &stats->collider);
+    if (stats->collider == 0x0F || stats->collider == 0x0D) {
+        ptr->y = 112;
+        edges = edges | 0x01;
+    }
+    //if (ptr->y >= 112) {
+    //    ptr->y = 112;
+    //    edges = edges | 0x01;
+    //}
 	else {
 		edges = edges & 0xFE;
 	}
@@ -54,14 +56,14 @@ void gravity(spriteData * ptr, gameData * stats) {
 
     // gravity function, on what frames do we update position
     else {
-    	if (ptr->g > 0 && stats->gr%4 == 0) {
+    	if (ptr->g > 0 && stats->gr%6 == 0) {
             ptr->g--;
     	}
-    	if (ptr->g == 0 && stats->gr%4 == 0) {
+    	if (ptr->g == 0 && stats->gr%6 == 0) {
     		ptr->state = ptr->state & 0xFD; // set state bit 2 to falling
     		ptr->g--;
     	}
-    	if ((ptr->g > -2 && ptr->g < 0 && stats->gr%4 == 0)){
+    	if ((ptr->g > -3 && ptr->g < 0 && stats->gr%6 == 0)){
     	    ptr->g--;
     	}
     	ptr->y = ptr->y - ptr->g;
