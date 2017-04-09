@@ -23,6 +23,7 @@ typedef struct {
   UINT8 gr; // gravity timer
   UINT8 h;  // which buttons are being held down?
   UINT8 vr; // how far along are we in vram?
-  UINT8 collider; // store tiles for collision detection here
+  UINT8 colliderL; // store tiles for collision detection here
+  UINT8 colliderR;
 
 } gameData;
