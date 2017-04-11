@@ -12,9 +12,9 @@
   Tile size            : 8 x 8
   Tiles                : 0 to 43
 
-  Palette colors       : None.
+  Palette colors       : Included.
   SGB Palette          : None.
-  CGB Palette          : None.
+  CGB Palette          : 2 Bits per entry.
 
   Convert to metatiles : No.
 
@@ -22,6 +22,12 @@
 
 */
 
+/* CGBpalette entries. */
+UWORD sabreCGB[] =
+{
+  0, RGB_WHITE, RGB_PURPLE, RGB_BLACK
+  RGB_WHITE, RGB_LIGHTGRAY, RGB_DARKGRAY, RGB_BLACK
+};
 /* Start of tile array. */
 unsigned char sabre[] =
 {

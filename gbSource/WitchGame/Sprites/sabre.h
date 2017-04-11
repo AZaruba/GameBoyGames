@@ -12,9 +12,9 @@
   Tile size            : 8 x 8
   Tiles                : 0 to 43
 
-  Palette colors       : None.
+  Palette colors       : Included.
   SGB Palette          : None.
-  CGB Palette          : None.
+  CGB Palette          : 2 Bits per entry.
 
   Convert to metatiles : No.
 
@@ -25,6 +25,80 @@
 
 /* Bank of tiles. */
 #define sabreBank 0
+
+/* Super Gameboy palette 0 */
+#define sabreSGBPal0c0 6076
+#define sabreSGBPal0c1 8935
+#define sabreSGBPal0c2 6596
+#define sabreSGBPal0c3 5344
+
+/* Super Gameboy palette 1 */
+#define sabreSGBPal1c0 6076
+#define sabreSGBPal1c1 8935
+#define sabreSGBPal1c2 6596
+#define sabreSGBPal1c3 5344
+
+/* Super Gameboy palette 2 */
+#define sabreSGBPal2c0 6076
+#define sabreSGBPal2c1 8935
+#define sabreSGBPal2c2 6596
+#define sabreSGBPal2c3 5344
+
+/* Super Gameboy palette 3 */
+#define sabreSGBPal3c0 6076
+#define sabreSGBPal3c1 8935
+#define sabreSGBPal3c2 6596
+#define sabreSGBPal3c3 5344
+
+/* Gameboy Color palette 0 */
+#define sabreCGBPal0c0 6076
+#define sabreCGBPal0c1 30719
+#define sabreCGBPal0c2 22539
+#define sabreCGBPal0c3 0
+
+/* Gameboy Color palette 1 */
+#define sabreCGBPal1c0 6076
+#define sabreCGBPal1c1 8935
+#define sabreCGBPal1c2 6596
+#define sabreCGBPal1c3 5344
+
+/* Gameboy Color palette 2 */
+#define sabreCGBPal2c0 6076
+#define sabreCGBPal2c1 8935
+#define sabreCGBPal2c2 6596
+#define sabreCGBPal2c3 5344
+
+/* Gameboy Color palette 3 */
+#define sabreCGBPal3c0 6076
+#define sabreCGBPal3c1 8935
+#define sabreCGBPal3c2 6596
+#define sabreCGBPal3c3 5344
+
+/* Gameboy Color palette 4 */
+#define sabreCGBPal4c0 6076
+#define sabreCGBPal4c1 8935
+#define sabreCGBPal4c2 6596
+#define sabreCGBPal4c3 5344
+
+/* Gameboy Color palette 5 */
+#define sabreCGBPal5c0 6076
+#define sabreCGBPal5c1 8935
+#define sabreCGBPal5c2 6596
+#define sabreCGBPal5c3 5344
+
+/* Gameboy Color palette 6 */
+#define sabreCGBPal6c0 6076
+#define sabreCGBPal6c1 8935
+#define sabreCGBPal6c2 6596
+#define sabreCGBPal6c3 5344
+
+/* Gameboy Color palette 7 */
+#define sabreCGBPal7c0 6076
+#define sabreCGBPal7c1 8935
+#define sabreCGBPal7c2 6596
+#define sabreCGBPal7c3 5344
+/* CGBpalette entries. */
+extern unsigned char sabreCGB[];
 /* Start of tile array. */
 extern unsigned char sabre[];
 
