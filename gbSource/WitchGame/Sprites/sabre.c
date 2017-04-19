@@ -23,11 +23,11 @@
 */
 
 /* CGBpalette entries. */
-UWORD sabreCGB[] =
-{
-  0, RGB_WHITE, RGB_PURPLE, RGB_BLACK
-  RGB_WHITE, RGB_LIGHTGRAY, RGB_DARKGRAY, RGB_BLACK
-};
+//UWORD sabreCGB[] =
+//{
+//  0, RGB_WHITE, RGB_PURPLE, RGB_BLACK
+//  RGB_WHITE, RGB_LIGHTGRAY, RGB_DARKGRAY, RGB_BLACK
+//};
 /* Start of tile array. */
 unsigned char sabre[] =
 {

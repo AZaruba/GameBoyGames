@@ -1,5 +1,5 @@
 #include <gb/gb.h>
-#include "structs.h"
+//#include "structs.h"
 
 #include "sprites/sabre.c"
 
@@ -26,6 +26,8 @@ void updateSprite(UINT8 sprite, UINT8 data, UINT8 size, UINT8 frame) {
 // load sprites to the specified locations (WIP)
 void loadSprites(spriteData * spritePtr, UINT8 vr, UINT8 tileCount, char* name) {
     set_sprite_data(vr, tileCount, name);
+    //set_sprite_palette(0, 1, sabreCGB);
+
 
     updateSprite(0x00, 0x00, 0x02, 0x00);
     updateSprite(0x02, 0x04, 0x04, 0x00);
@@ -36,6 +38,13 @@ void loadSprites(spriteData * spritePtr, UINT8 vr, UINT8 tileCount, char* name) 
     move_sprite(3, spritePtr->x + 8, spritePtr->y + 8);
     move_sprite(4, spritePtr->x, spritePtr->y + 16);
     move_sprite(5, spritePtr->x + 8, spritePtr->y + 16);
+    //set_sprite_prop(0,0);
+    //set_sprite_prop(1,0);
+    //set_sprite_prop(2,0);
+    //set_sprite_prop(3,0);
+    //set_sprite_prop(4,0);
+    //set_sprite_prop(5,0);
+
 }
 
 /*

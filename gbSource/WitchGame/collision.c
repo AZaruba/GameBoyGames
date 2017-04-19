@@ -1,39 +1,39 @@
 /*
  * collision detection functions
  */
-#include "structs.h"
+//#include "structs.h"
 
 /*
  * checks collision between player character and various objects
  */
 UINT8 collision(spriteData * ptr, gameData * stats) {
 	UINT8 edges = 0x00;
-    UINT8 bkgColH = ptr->x; // horiz tile occupied by sprite
-    UINT8 bkgColV = ptr->y + 24; // vert tile occupied by sprite
-    bkgColH = bkgColH >> 3;
-    bkgColV = bkgColV >> 3;
+    //UINT8 bkgColH = ptr->x; // horiz tile occupied by sprite
+    //UINT8 bkgColV = ptr->y + 24; // vert tile occupied by sprite
+    //bkgColH = bkgColH >> 3;
+    //bkgColV = bkgColV >> 3;
 
-    //if (ptr->y >= 112) {
-    //    ptr->y = 112;
-    //    edges = edges | 0x01;
-    //}
-    // here goes calculations on loaded background tiles
-    bkgColV++;
-    get_bkg_tiles(bkgColH, bkgColV, 0x01, 0x01, &stats->colliderL);
-    get_bkg_tiles(bkgColH + 1, bkgColV, 0x01, 0x01, &stats->colliderR);
-
-    if (stats->colliderL == 0x0F || stats->colliderL == 0x0D){
-        ptr->y = 32;
-        ptr->g = 2;
-        edges = edges | 0x01;
-    } else if (stats->colliderR == 0x0F || stats->colliderR == 0x0D) {
-        ptr->y = 32;
+    if (ptr->y >= 112) {
+        ptr->y = 112;
         edges = edges | 0x01;
     }
+    // here goes calculations on loaded background tiles
+    //bkgColV++;
+    //get_bkg_tiles(bkgColH, bkgColV, 0x01, 0x01, &stats->colliderL);
+    //get_bkg_tiles(bkgColH + 1, bkgColV, 0x01, 0x01, &stats->colliderR);
+
+    //if (stats->colliderL == 0x0F || stats->colliderL == 0x0D){
+    //    ptr->y = 32;
+    //    ptr->g = 2;
+    //    edges = edges | 0x01;
+    //} else if (stats->colliderR == 0x0F || stats->colliderR == 0x0D) {
+    //    ptr->y = 32;
+    //    edges = edges | 0x01;
+    //}
     
-	else {
-		edges = edges & 0xFE;
-	}
+	//else {
+	//	edges = edges & 0xFE;
+	//}
 	return edges;
 }
 
